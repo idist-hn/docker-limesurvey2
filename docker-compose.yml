@@ -1,28 +1,33 @@
-version: "3.0"
+version: '3'
 services:
   limesurvey:
-    build:
-      context: 6.0/apache/
-      dockerfile: Dockerfile
+    image: docker.io/martialblog/limesurvey:latest
+    restart: always
+    environment:
+      - DB_TYPE=pgsql
+      - DB_PORT=5432
+      - DB_HOST=db
+      - DB_PASSWORD=Cie123
+      - DB_NAME=limesurvey
+      - DB_USERNAME=limesurvey
+      - ADMIN_USER=admin
+      - ADMIN_NAME=Admin
+      - ADMIN_PASSWORD=Cie@12345
+      - ADMIN_EMAIL=minhtoan.developer@gmail.com
+      - PUBLIC_URL=limesurvey.dtqt.edu.vn
     volumes:
-      # Hint: This is just an example, change /tmp to something persistent
-      - /tmp/upload/surveys:/var/www/html/upload/surveys
-    links:
-      - lime-db
-    depends_on:
-      - lime-db
+      - ./data/limesurvey:/var/www/html/upload/surveys
+      - ./html:/var/www/html
     ports:
-      - "8080:8080"
+      - 7181:8080
+    depends_on:
+      - db
+  db:
+    image: docker.io/postgres:10-alpine
+    restart: always
+    volumes:
+      - ./data/db-data:/var/lib/postgresql/data
     environment:
-      - "DB_HOST=lime-db"
-      # - "DB_PASSWORD="
-      # - "ADMIN_PASSWORD="
-      # If you require an empty table prefix, use a space as the DB_TABLE_PREFIX
-      # - "DB_TABLE_PREFIX= "
-  lime-db:
-    image: docker.io/mysql:5.7
-    environment:
-      - "MYSQL_USER=limesurvey"
-      - "MYSQL_DATABASE=limesurvey"
-      # - "MYSQL_PASSWORD="
-      # - "MYSQL_ROOT_PASSWORD="
+      - POSTGRES_USER=limesurvey
+      - POSTGRES_DB=limesurvey
+      - POSTGRES_PASSWORD=Cie123
