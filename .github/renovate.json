@@ -1,9 +1,0 @@
-{
-  "extends": [
-    "config:base"
-  ],
-  "enabledManagers": ["dockerfile", "github-actions"],
-  "dockerfile": {
-    "ignorePaths": ["4.0", "nginx-certbot"]
-  }
-}

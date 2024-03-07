@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/html/application" isTestSource="false" packagePrefix="LimeSurvey" />
+      <sourceFolder url="file://$MODULE_DIR$/html/application/core/plugins" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/html/application/helpers" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/html/application/libraries" isTestSource="false" packagePrefix="LimeSurvey" />
+      <sourceFolder url="file://$MODULE_DIR$/html/modules/admin" isTestSource="false" packagePrefix="lsadminmodules" />
+      <sourceFolder url="file://$MODULE_DIR$/html/plugins/Demo" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
