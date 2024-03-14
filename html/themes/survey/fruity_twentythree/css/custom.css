@@ -6,3 +6,44 @@
     It will be loaded last, so you can override any other property.
     Also, it will never be updated. So if you inheritate a core template and just add here some CSS, you'll still benefit of all the updates
 */
+
+
+.form_title_custom {
+    margin-bottom: 0 !important;
+}
+.form_title_custom .control-label {
+    line-height: 32px;
+}
+.form_body_custom {
+    margin-bottom: 0 !important;
+}
+.form_body_break {
+    margin-bottom: 3rem !important;
+}
+.form_title_custom .question-valid-container {
+    display: none;
+}
+.form_body_custom .question-title-container {
+    display: none;
+}
+
+.form_body_custom .question-help-container {
+    display: none;
+}
+
+.form_body_custom .question-valid-container {
+    display: none;
+}
+
+.form_body_custom thead {
+    display: none;
+}
+.form_title_custom .subquestion-list {
+    margin-bottom: 0 !important;
+}
+.form_title_custom .answer-item {
+    margin-bottom: 0 !important;
+}
+.form_body_custom .subquestion-list {
+    margin-bottom: 0 !important;
+}

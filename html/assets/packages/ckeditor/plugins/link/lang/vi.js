@@ -32,7 +32,7 @@ CKEDITOR.plugins.setLang( 'link', 'vi', {
 	langDirLTR: 'Trái sang phải (LTR)',
 	langDirRTL: 'Phải sang trái (RTL)',
 	menu: 'Sửa liên kết',
-	name: 'Tên',
+	name: 'Tên cơ sở giáo dục đại học cụ thể',
 	noAnchors: '(Không có điểm neo nào trong tài liệu)',
 	noEmail: 'Hãy đưa vào địa chỉ thư điện tử',
 	noUrl: 'Hãy đưa vào đường dẫn liên kết (URL)',
