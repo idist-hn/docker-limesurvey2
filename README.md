@@ -14,12 +14,12 @@ Dockerfile to build a [LimeSurvey](https://limesurvey.org) Image for the Docker 
 
 ## Supported tags and respective Dockerfile links
 
-- [`6-apache`, `6.<BUILD-NUMBER>-apache`, `latest` ](https://github.com/martialblog/docker-limesurvey/blob/master/6.0/apache/Dockerfile)
+- [`7-apache`, `7.<BUILD-NUMBER>-apache`, `latest` ](https://github.com/martialblog/docker-limesurvey/blob/master/7.0/apache/Dockerfile)
+- [`7-fpm`, `7.<BUILD-NUMBER>-fpm`](https://github.com/martialblog/docker-limesurvey/blob/master/7.0/fpm/Dockerfile)
+- [`7-fpm-alpine`, `7.<BUILD-NUMBER>-fpm-alpine`](https://github.com/martialblog/docker-limesurvey/blob/master/7.0/fpm-alpine/Dockerfile)
+- [`6-apache`, `6.<BUILD-NUMBER>-apache`](https://github.com/martialblog/docker-limesurvey/blob/master/6.0/apache/Dockerfile)
 - [`6-fpm`, `6.<BUILD-NUMBER>-fpm`](https://github.com/martialblog/docker-limesurvey/blob/master/6.0/fpm/Dockerfile)
 - [`6-fpm-alpine`, `6.<BUILD-NUMBER>-fpm-alpine`](https://github.com/martialblog/docker-limesurvey/blob/master/6.0/fpm-alpine/Dockerfile)
-- [`5-apache`, `5.<BUILD-NUMBER>-apache`, `latest` ](https://github.com/martialblog/docker-limesurvey/blob/master/5.0/apache/Dockerfile)
-- [`5-fpm`, `5.<BUILD-NUMBER>-fpm`](https://github.com/martialblog/docker-limesurvey/blob/master/5.0/fpm/Dockerfile)
-- [`5-fpm-alpine`, `5.<BUILD-NUMBER>-fpm-alpine`](https://github.com/martialblog/docker-limesurvey/blob/master/5.0/fpm-alpine/Dockerfile)
 
 # Using the Apache Image
 
@@ -31,7 +31,7 @@ This image is also available in a `rootless` variant with `www-data` as default 
 
 To change to Apache Webserver configuration, mount a Volume into the Container at:
 
- - `/etc/apache2/sites-available/000-default.conf`
+- `/etc/apache2/sites-available/000-default.conf`
 
 See the example configuration provided.
 
@@ -57,9 +57,9 @@ LimeSurvey requires an external database (MySQL, PostgreSQL) to run. See *docker
 
 To preserve the uploaded files assign the upload folder into a volume. See *docker-compose.yml* for example.
 
-Path: `/var/www/html/upload/surveys`
+Path: `/var/www/html/upload`
 
-**Hint**: The mounted directory must be owned by the webserver user (e.g. www-data)
+**Hint**: The mounted directory must be owned by the webserver user (e.g. www-data). The host folder must already have the base content from LimeSurvey on https://community.limesurvey.org/downloads/.
 
 # LimeSurvey configuration
 
@@ -69,7 +69,7 @@ The entrypoint will create a new config.php if none is provided and run the Lime
 
 To change to LimeSurvey configuration, you can mount a Volume into the Container at:
 
- - `/my-data/config.php:/var/www/html/application/config/config.php`
+- `/my-data/config.php:/var/www/html/application/config/config.php`
 
 **Hint**: If this configuration is present before the installation, the LimeSurvey Web Installer will not run automatically.
 
@@ -77,9 +77,9 @@ To change to LimeSurvey configuration, you can mount a Volume into the Container
 
 LimeSurvey version 4.0 and newer support data encryption, this image give you these options:
 
-* Provide a security.php file directly (volume)
-* Provide encryption keys for the `security.php` file (environment variables)
-* Provide nothing and get a non-persistent `security.php` file
+- Provide a security.php file directly (volume)
+- Provide encryption keys for the `security.php` file (environment variables)
+- Provide nothing and get a non-persistent `security.php` file
 
 For further details on the settings see: https://manual.limesurvey.org/Data_encryption
 
@@ -87,9 +87,9 @@ For further details on the settings see: https://manual.limesurvey.org/Data_encr
 
 If you are running LimeSurvey behind a Reverse Proxy you might need some additional configuration in the Proxy. For example:
 
-* Apache: `ProxyPreserveHost On`
-* Nginx: `fastcgi_param HTTP_HOST my-survey.example.local;`
-* Traefik: Set the Host Header explicitly via a customRequestHeaders
+- Apache: `ProxyPreserveHost On`
+- Nginx: `fastcgi_param HTTP_HOST my-survey.example.local;`
+- Traefik: Set the Host Header explicitly via a customRequestHeaders
 
 ## Traefik example
 
@@ -104,34 +104,36 @@ If you are running LimeSurvey behind a Reverse Proxy you might need some additio
 
 # Environment Variables
 
-| Parameter       | Description                               |
-| ---------       | -----------                               |
-| DB_TYPE         | Database Type to use. mysql or pgsql      |
-| DB_HOST         | Database server hostname                  |
-| DB_PORT         | Database server port                      |
-| DB_SOCK         | Database unix socket instead of host/port |
-| DB_NAME         | Database name                             |
-| DB_TABLE_PREFIX | Database table prefix; set this to a single whitespace if you don't want a table prefix. |
-| DB_MYSQL_ENGINE | MySQL engine used for survey tables (values: MyISAM, InnoDB, default: MyISAM)       |
-| DB_USERNAME     | Database user                             |
-| DB_PASSWORD     | Database user's password                  |
-| ADMIN_USER      | Initial LimeSurvey Admin Username (for signing into admin panel)             |
-| ADMIN_NAME      | Initial LimeSurvey Admin Name             |
-| ADMIN_EMAIL     | Initial LimeSurvey Admin Email            |
-| ADMIN_PASSWORD  | Initial LimeSurvey Admin Password (for signing into admin panel)         |
-| PUBLIC_URL      | Public URL for public scripts             |
-| BASE_URL        | Application Base URL                      |
-| URL_FORMAT      | URL Format. path or get                   |
-| TABLE_SESSION   | Enable table sessions (true)              |
-| SHOW_SCRIPT_NAME | Script name in URL (true\|false). Default: true |
-| DEBUG           | Debug level (0, 1, 2). Default: 0         |
-| DEBUG_SQL       | SQL Debug level (0, 1, 2). Default 0      |
-| ENCRYPT_KEYPAIR  | Data encryption keypair                  |
-| ENCRYPT_PUBLIC_KEY | Data encryption public key             |
-| ENCRYPT_SECRET_KEY | Data encryption secret key             |
-| ENCRYPT_NONCE      | Data encryption nonce (used in 5.0 and higher) |
-| ENCRYPT_SECRET_BOX_KEY | Data encryption secret box key (used in 5.0 and higher) |
-| LISTEN_PORT     | Apache: Listen port. Default: 8080        |
+| Parameter              | Description                                                                                                                               |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| DB_TYPE                | Database Type to use. (mysql\|pgsql). Default: mysql                                                                                      |
+| DB_HOST                | Database server hostname. Default: mysql                                                                                                  |
+| DB_PORT                | Database server port. Default: 3306                                                                                                       |
+| DB_SOCK                | Database unix socket instead of host/port                                                                                                 |
+| DB_NAME                | Database name. Default: limesurvey                                                                                                        |
+| DB_TABLE_PREFIX        | Database table prefix; set this to a single whitespace if you don't want a table prefix. Default: lime_                                   |
+| DB_MYSQL_ENGINE        | MySQL engine used for survey tables (MyISAM\|InnoDB). Default: MyISAM                                                                     |
+| DB_USERNAME            | Database user. Default: limesurvey                                                                                                        |
+| DB_PASSWORD            | Database user's password                                                                                                                  |
+| DB_CHARSET             | Database charset. Default: utf8mb4 if database type is mysql ; utf8 if database type is pgsql                                             |
+| ADMIN_USER             | Initial LimeSurvey Admin Username (for signing into admin panel). Default: admin                                                          |
+| ADMIN_NAME             | Initial LimeSurvey Admin Name. Default: admin                                                                                             |
+| ADMIN_EMAIL            | Initial LimeSurvey Admin Email. Default: foobar@example.com                                                                               |
+| ADMIN_PASSWORD         | Initial LimeSurvey Admin Password (for signing into admin panel)                                                                          |
+| PUBLIC_URL             | Public URL for public scripts                                                                                                             |
+| BASE_URL               | Application Base URL                                                                                                                      |
+| HOST_INFO              | Enforce a certain URL base (see [`hostInfo` key in documentation](https://www.limesurvey.org/manual/Optional_settings#Request_settings))  |
+| URL_FORMAT             | URL Format. (path\|get). Default: path                                                                                                    |
+| TABLE_SESSION          | Enable table sessions (true)                                                                                                              |
+| SHOW_SCRIPT_NAME       | Script name in URL (true\|false). Default: true                                                                                           |
+| DEBUG                  | Debug level (0\|1\|2). Default: 0                                                                                                         |
+| DEBUG_SQL              | SQL Debug level (0\|1\|2). Default 0                                                                                                      |
+| ENCRYPT_KEYPAIR        | Data encryption keypair                                                                                                                   |
+| ENCRYPT_PUBLIC_KEY     | Data encryption public key                                                                                                                |
+| ENCRYPT_SECRET_KEY     | Data encryption secret key                                                                                                                |
+| ENCRYPT_NONCE          | Data encryption nonce (used in 5.0 and higher)                                                                                            |
+| ENCRYPT_SECRET_BOX_KEY | Data encryption secret box key (used in 5.0 and higher)                                                                                   |
+| LISTEN_PORT            | Apache: Listen port. Default: 8080                                                                                                        |
 
 Sensitive information can also be passed `_FILE` to the following environment variables to load the values from the given file path. Example `DB_PASSWORD_FILE=/run/secrets/db_password`.
 
@@ -171,7 +173,7 @@ https://github.com/martialblog/helm-charts
 
 # Upgrade Guide
 
-These guides are only referring to the Docker Image, for details on the application users should consult the [official LimeSurvey documentation](https://manual.limesurvey.org/Upgrading_from_a_previous_version) for details.
+These guides are only referring to the Docker Image, for details on the application users should consult the [official LimeSurvey documentation](https://manual.limesurvey.org/Upgrading_from_a_previous_version) and the [LimeSurvey roadmap](https://www.limesurvey.org/manual/LimeSurvey_roadmap) for details.
 
 ## Upgrading the FPM Images
 
@@ -185,11 +187,19 @@ local     docker-limesurvey_lime
 $ docker volume rm docker-limesurvey_lime
 ```
 
+## Upgrading to 7.0 from 6.x
+
+The LimeSurvey 7 Images will use PHP 8.4 and Debian Trixie as Base Images.
+
+Note that, the php-imap extention has been removed from Debian Trixie and this container image.
+
 ## Upgrading to 6.0 from 5.x
 
 The LimeSurvey 6 Images will use PHP 8.1 as Base Images.
 
-LimeSurvey 5 will become the new LTS. LimeSurvey 3 is deprecated and will no longer be supported.
+LimeSurvey 6 is currently in **Extended Support** (security fixes only).
+
+LimeSurvey 5 has reached its **End of Life (Legacy)** status. Users are strongly encouraged to upgrade to 6.x or 7.x.
 
 ## Upgrading to 5.0 from 4.x
 
@@ -220,7 +230,28 @@ When running LimeSurvey behind a reverse proxy with a subdirectory (i.e. example
 This might be fixed by setting the HTTP Host Header in the reverse proxy explicitly.
 
 See:
+
 - https://github.com/martialblog/docker-limesurvey/issues/127
+
+## Updating or rebuilding container removes themes/plugins/...
+
+The `/var/www/html/upload` directory contains multiple subdirectories for different kind of persistent data,
+e.g. themes, plugins and survey uploads. In past, the example configuration recommended only the persistent
+volume for survey uploads. In such a situation, any rebuild of the container will remove other stored data.
+To keep them persistent, you need to ensure that all subdirectories of `upload` are stored in a volume.
+
+The easiest way is to mount the whole `/var/www/html/upload`. If you want to update an existing deployment
+from previous configuration, please keep in mind that just changing the mount path may cause data loss
+(e.g. already uploaded themes). Please backup your data from the container before any modifications.
+You may also consider separated volumes for each subdirectory.
+
+## Apache generates redirects with internal port / URLs don't work without trailing slash
+
+If your deployment is behind an additional proxy that listens on a different port than the Apache in the
+container, you may notice some issues with redirects generated from Apache, e.g. when redirecting
+URLs to the cannonical version. Apache will try to add the port it's listening on to the URL.
+To prevent this, you may edit the Apache configuration and add the `ServerName` directive with your
+domain. In this case, Apache won't try to construct it automatically and use the configured value.
 
 # References
 

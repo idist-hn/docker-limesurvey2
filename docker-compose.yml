@@ -1,23 +1,15 @@
-version: '3'
 services:
   limesurvey:
-    image: docker.io/martialblog/limesurvey:latest
-    restart: always
-    environment:
-      - DB_TYPE=pgsql
-      - DB_PORT=5432
-      - DB_HOST=db
-      - DB_PASSWORD=Cie123
-      - DB_NAME=limesurvey
-      - DB_USERNAME=limesurvey
-      - ADMIN_USER=admin
-      - ADMIN_NAME=Admin
-      - ADMIN_PASSWORD=Cie@12345
-      - ADMIN_EMAIL=minhtoan.developer@gmail.com
-      - PUBLIC_URL=limesurvey.dtqt.edu.vn
+    build:
+      context: 7.0/apache/
+      dockerfile: Dockerfile
     volumes:
-      - ./data/limesurvey:/var/www/html/upload/surveys
-      - ./html:/var/www/html
+      # TODO Update storage location as desired. All subdirectories of the `upload` may contain
+      # data intended to be persistent (e.g. themes). `upload` host directory must already have the
+      # base content from LimeSurvey on https://community.limesurvey.org/downloads/
+      - ./lime-data/upload:/var/www/html/upload
+    networks:
+      - limesurvey-db
     ports:
       - 7181:8080
     depends_on:
@@ -28,6 +20,23 @@ services:
     volumes:
       - ./data/db-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=limesurvey
-      - POSTGRES_DB=limesurvey
-      - POSTGRES_PASSWORD=Cie123
+      - "DB_HOST=lime-db"
+      # TODO set passwords
+      # - "DB_PASSWORD="
+      # - "ADMIN_PASSWORD="
+      # If you require an empty table prefix, use a space as the DB_TABLE_PREFIX
+      # - "DB_TABLE_PREFIX= "
+  lime-db:
+    image: mariadb:11.4
+    networks:
+      - limesurvey-db
+    environment:
+      - "MYSQL_USER=limesurvey"
+      - "MYSQL_DATABASE=limesurvey"
+      # TODO set passwords
+      # - "MYSQL_PASSWORD="
+      # - "MYSQL_ROOT_PASSWORD="
+
+networks:
+  limesurvey-db:
+    driver: bridge
